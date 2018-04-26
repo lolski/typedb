@@ -29,6 +29,7 @@ import ai.grakn.concept.SchemaConcept;
 import ai.grakn.concept.Type;
 import ai.grakn.exception.GraqlQueryException;
 import ai.grakn.graql.analytics.ComputeQuery;
+import ai.grakn.graql.analytics.NewDegreeQuery;
 import ai.grakn.graql.analytics.StatisticsQuery;
 import ai.grakn.graql.analytics.ConnectedComponentQuery;
 import ai.grakn.graql.analytics.CorenessQuery;
@@ -74,7 +75,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -248,6 +252,20 @@ public class TinkerComputeQueryRunner {
                     new DegreeVertexProgram(ofLabelIds),
                     new DegreeDistributionMapReduce(ofLabelIds, DegreeVertexProgram.DEGREE),
                     subLabelIds);
+
+            return result.memory().get(DegreeDistributionMapReduce.class.getName());
+        });
+    }
+
+    public ComputeJob<Map<Long, Set<String>>> run(NewDegreeQuery query) {
+        return runCompute(query, tinkerComputeQuery -> {
+            Set<LabelId> ofLabels = convertLabelsToIds(tinkerComputeQuery.subLabels());
+            Set<LabelId> subLabels = convertLabelsToIds(tinkerComputeQuery.subLabels());
+
+            ComputerResult result = tinkerComputeQuery.compute(
+                    new DegreeVertexProgram(ofLabels),
+                    new DegreeDistributionMapReduce(ofLabels, DegreeVertexProgram.DEGREE),
+                    subLabels);
 
             return result.memory().get(DegreeDistributionMapReduce.class.getName());
         });

@@ -57,4 +57,7 @@ public interface CentralityQueryBuilder {
      */
     @CheckReturnValue
     DegreeQuery usingDegree();
+
+    @CheckReturnValue
+    NewDegreeQuery usingNewDegree();
 }

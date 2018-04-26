@@ -18,46 +18,34 @@
 
 package ai.grakn.graql.internal.query.analytics;
 
+import ai.grakn.ComputeJob;
 import ai.grakn.GraknTx;
-import ai.grakn.graql.analytics.CentralityQueryBuilder;
-import ai.grakn.graql.analytics.CorenessQuery;
-import ai.grakn.graql.analytics.DegreeQuery;
 import ai.grakn.graql.analytics.NewDegreeQuery;
 
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 /**
- * This class implements CentralityQueryBuilder.
- *
- * @author Jason Liu
+ * @author Ganeshwara Herawan Hananda
  */
-
-public class CentralityQueryBuilderImpl implements CentralityQueryBuilder {
-
-    private Optional<GraknTx> tx;
-
-    CentralityQueryBuilderImpl(Optional<GraknTx> tx) {
-        this.tx = tx;
+public class NewDegreeQueryImpl extends AbstractCentralityQuery<NewDegreeQuery> implements NewDegreeQuery {
+    public NewDegreeQueryImpl(Optional<GraknTx> tx) {
+        super(tx);
     }
 
     @Override
-    public CentralityQueryBuilder withTx(GraknTx tx) {
-        this.tx = Optional.of(tx);
-        return this;
+    String algorithmString() {
+        return "uzing new degree implz";
     }
 
     @Override
-    public CorenessQuery usingKCore() {
-        return new CorenessQueryImpl(tx);
+    String argumentsString() {
+        return "";
     }
 
     @Override
-    public DegreeQuery usingDegree() {
-        return new DegreeQueryImpl(tx);
-    }
-
-    @Override
-    public NewDegreeQuery usingNewDegree() {
-        return new NewDegreeQueryImpl(tx);
+    protected ComputeJob<Map<Long, Set<String>>> createJob() {
+        return queryRunner().run(this);
     }
 }

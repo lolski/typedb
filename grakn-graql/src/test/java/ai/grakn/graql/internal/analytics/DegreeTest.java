@@ -65,6 +65,31 @@ public class DegreeTest {
     }
 
     @Test
+    public void wow() {
+        EntityType a = tx.putEntityType("eta");
+        EntityType b = tx.putEntityType("etb");
+        Role r1 = tx.putRole("r1");
+        Role r2 = tx.putRole("r2");
+        a.plays(r1).plays(r2);
+        b.plays(r1).plays(r2);
+        RelationshipType rt = tx.putRelationshipType("rt").relates(r1).relates(r2);
+        Entity a1 = a.addEntity();
+        Entity a2 = a.addEntity();
+        Entity a3 = a.addEntity();
+        Entity b1 = b.addEntity();
+        rt.addRelationship().addRolePlayer(r1, a1).addRolePlayer(r2, a2);
+        rt.addRelationship().addRolePlayer(r1, a2).addRolePlayer(r2, a3);
+        rt.addRelationship().addRolePlayer(r1, a2).addRolePlayer(r2, b1);
+        tx.commit();
+
+        try (GraknTx olapTx = session.open(GraknTxType.READ)) {
+            Map<Long, Set<String>> result = olapTx.graql().compute().centrality().usingNewDegree().in("eta", "etb", "rt").execute();
+            System.out.println(result);
+        }
+
+
+    }
+    @Test
     public void testDegreesSimple() {
         // create instances
         EntityType thingy = tx.putEntityType("thingy");
@@ -93,7 +118,7 @@ public class DegreeTest {
                 .addRolePlayer(role2, tx.getConcept(entity4));
         tx.commit();
 
-        tx = session.open(GraknTxType.READ);
+//        tx = session.open(GraknTxType.READ);
 
         Map<ConceptId, Long> correctDegrees = new HashMap<>();
         correctDegrees.put(entity1, 1L);
@@ -108,7 +133,7 @@ public class DegreeTest {
         for (long i = 0L; i < workerNumber; i++) {
             list.add(i);
         }
-        tx.close();
+//        tx.close();
 
         Set<Map<Long, Set<String>>> result = list.parallelStream().map(i -> {
             try (GraknTx graph = session.open(GraknTxType.READ)) {

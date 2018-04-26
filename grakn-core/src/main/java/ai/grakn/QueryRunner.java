@@ -35,6 +35,7 @@ import ai.grakn.graql.analytics.MaxQuery;
 import ai.grakn.graql.analytics.MeanQuery;
 import ai.grakn.graql.analytics.MedianQuery;
 import ai.grakn.graql.analytics.MinQuery;
+import ai.grakn.graql.analytics.NewDegreeQuery;
 import ai.grakn.graql.analytics.PathQuery;
 import ai.grakn.graql.analytics.PathsQuery;
 import ai.grakn.graql.analytics.StdQuery;
@@ -78,6 +79,8 @@ public interface QueryRunner {
     ComputeJob<Long> run(CountQuery query);
 
     ComputeJob<Map<Long, Set<String>>> run(DegreeQuery query);
+
+    ComputeJob<Map<Long, Set<String>>> run(NewDegreeQuery query);
 
     ComputeJob<Map<String, Set<String>>> run(KCoreQuery query);
 

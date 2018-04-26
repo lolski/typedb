@@ -39,6 +39,7 @@ import ai.grakn.graql.analytics.MaxQuery;
 import ai.grakn.graql.analytics.MeanQuery;
 import ai.grakn.graql.analytics.MedianQuery;
 import ai.grakn.graql.analytics.MinQuery;
+import ai.grakn.graql.analytics.NewDegreeQuery;
 import ai.grakn.graql.analytics.PathQuery;
 import ai.grakn.graql.analytics.PathsQuery;
 import ai.grakn.graql.analytics.StdQuery;
@@ -122,6 +123,11 @@ final class RemoteQueryRunner implements QueryRunner {
 
     @Override
     public ComputeJob<Map<Long, Set<String>>> run(DegreeQuery query) {
+        return runComputeUnchecked(query);
+    }
+
+    @Override
+    public ComputeJob<Map<Long, Set<String>>> run(NewDegreeQuery query) {
         return runComputeUnchecked(query);
     }
 

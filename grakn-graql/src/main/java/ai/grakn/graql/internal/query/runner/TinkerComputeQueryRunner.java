@@ -259,9 +259,15 @@ public class TinkerComputeQueryRunner {
 
     public ComputeJob<Map<Long, Set<String>>> run(NewDegreeQuery query) {
         return runCompute(query, tinkerComputeQuery -> {
-            Map<Long, Set<String>> result = new HashMap<>();
-            result.put(666L, new HashSet<>(Arrays.asList("wow")));
-            return result;
+            Set<LabelId> ofLabels = convertLabelsToIds(tinkerComputeQuery.subLabels());
+            Set<LabelId> subLabels = convertLabelsToIds(tinkerComputeQuery.subLabels());
+
+            ComputerResult result = tinkerComputeQuery.compute(
+                    new DegreeVertexProgram(ofLabels),
+                    new DegreeDistributionMapReduce(ofLabels, DegreeVertexProgram.DEGREE),
+                    subLabels);
+
+            return result.memory().get(DegreeDistributionMapReduce.class.getName());
         });
     }
 

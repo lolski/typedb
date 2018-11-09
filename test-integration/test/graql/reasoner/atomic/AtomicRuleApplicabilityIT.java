@@ -78,10 +78,11 @@ public class AtomicRuleApplicabilityIT {
     }
 
     @AfterClass
-    public static void closeSession(){
+    public static void closeSession() throws Exception {
         ruleApplicabilitySession.close();
         resourceApplicabilitySession.close();
         reifiedResourceApplicabilitySession.close();
+        server.cleanup();
     }
     
 

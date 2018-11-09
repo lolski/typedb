@@ -68,10 +68,11 @@ public class AtomicRoleInferenceIT {
     }
 
     @AfterClass
-    public static void closeSession(){
+    public static void closeSession() throws Exception {
         roleInferenceSetSession.close();
         genericSchemaSession.close();
         ruleApplicabilitySetSession.close();
+        server.cleanup();
     }
 
     @Test

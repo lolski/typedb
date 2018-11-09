@@ -61,6 +61,7 @@ import com.google.common.collect.Iterators;
 import com.google.common.collect.Sets;
 import junit.framework.TestCase;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Ignore;
@@ -135,6 +136,11 @@ public class RemoteQueryIT {
     @After
     public void tearDown() {
         localSession.close(); remoteSession.close();
+    }
+
+    @AfterClass
+    public static void classTearDown() throws Exception {
+        server.cleanup();
     }
 
     @Test

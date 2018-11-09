@@ -210,9 +210,10 @@ public class RemoteConceptIT {
     }
 
     @AfterClass
-    public static void closeSession() {
+    public static void closeSession() throws Exception {
         // TODO: uncomment the code below to confirm we have fixed/removed our Core API Cache
         //session.close();
+        server.cleanup();
     }
 
     @Test

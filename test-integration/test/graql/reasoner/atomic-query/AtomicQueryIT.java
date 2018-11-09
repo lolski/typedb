@@ -97,9 +97,10 @@ public class AtomicQueryIT {
     }
 
     @AfterClass
-    public static void closeSession(){
+    public static void closeSession() throws Exception {
         materialisationTestSession.close();
         geoGraphSession.close();
+        server.cleanup();
     }
 
     @Test (expected = IllegalArgumentException.class)

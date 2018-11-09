@@ -49,6 +49,7 @@ import ai.grakn.util.Schema;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Test;
@@ -93,6 +94,10 @@ public class AtomicTypeInferenceIT {
         loadFromFile("typeInferenceTest.gql", testContextSession);
     }
 
+    @AfterClass
+    public static void classTearDown() throws Exception {
+        server.cleanup();
+    }
     @Test
     public void testTypeInference_singleGuard() {
         EmbeddedGraknTx<?> tx = testContextSession.transaction(GraknTxType.WRITE);

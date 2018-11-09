@@ -38,6 +38,7 @@ import ai.grakn.graql.internal.reasoner.graph.PathTreeGraph;
 import ai.grakn.graql.internal.reasoner.graph.TransitivityChainGraph;
 import ai.grakn.graql.internal.reasoner.graph.TransitivityMatrixGraph;
 import ai.grakn.test.rule.ConcurrentGraknServer;
+import org.junit.AfterClass;
 import org.junit.ClassRule;
 import org.junit.Test;
 
@@ -51,6 +52,10 @@ public class BenchmarkSmallIT {
     @ClassRule
     public static final ConcurrentGraknServer server = new ConcurrentGraknServer();
 
+    @AfterClass
+    public static void classTearDown() throws Exception {
+        server.cleanup();
+    }
 
     /**
      * Executes a scalability test defined in terms of the number of rules in the system. Creates a simple rule chain:

@@ -70,8 +70,9 @@ public class AtomicQueryEquivalenceIT {
     }
 
     @AfterClass
-    public static void closeSession(){
+    public static void closeSession() throws Exception {
         genericSchemaSession.close();
+        server.cleanup();
     }
 
     @Before

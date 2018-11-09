@@ -36,6 +36,7 @@ import ai.grakn.test.rule.ConcurrentGraknServer;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Multimap;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
@@ -63,6 +64,11 @@ public class BenchmarkBigIT {
     @Before
     public void setupSession() {
         this.keyspace = Keyspace.of("a"+ UUID.randomUUID().toString().replaceAll("-", ""));
+    }
+
+    @AfterClass
+    public static void classTearDown() throws Exception {
+        server.cleanup();
     }
 
     private void loadOntology(String fileName, Grakn.Session session){

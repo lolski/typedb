@@ -68,8 +68,9 @@ public class QueryCacheIT {
     }
 
     @AfterClass
-    public static void closeSession() {
+    public static void closeSession() throws Exception {
         ruleApplicabilitySession.close();
+        server.cleanup();
     }
 
     private static ReasonerAtomicQuery recordQuery;

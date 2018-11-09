@@ -98,7 +98,8 @@ public class GraqlShellIT {
     }
 
     @AfterClass
-    public static void resetIO() {
+    public static void resetIO() throws Exception {
+        server.cleanup();
         System.setIn(trueIn);
     }
 

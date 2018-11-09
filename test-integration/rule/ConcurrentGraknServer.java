@@ -32,6 +32,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.UUID;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * This rule starts Cassandra and Grakn Server and makes sure that both processes bind to random and unused ports.
@@ -46,6 +47,7 @@ public class ConcurrentGraknServer extends ExternalResource {
 
     private KeyspaceStore keyspaceStore;
 
+    public CopyOnWriteArrayList<EmbeddedGraknSession> sessions = new CopyOnWriteArrayList<>();
 
     private EngineGraknTxFactory engineGraknTxFactory;
 
@@ -61,6 +63,7 @@ public class ConcurrentGraknServer extends ExternalResource {
         } catch (TTransportException | IOException | ConfigurationException e) {
             throw new RuntimeException("Cannot start Embedded Cassandra", e);
         }
+
         System.out.println("Cassandra started.");
         try {
             dataDirTmp = Files.createTempDirectory("db-for-test");
@@ -101,7 +104,6 @@ public class ConcurrentGraknServer extends ExternalResource {
         return engineGraknTxFactory;
     }
 
-
     private GraknConfig createTestConfig(String dataDir) {
         GraknConfig config = GraknConfig.read(TEST_CONFIG_FILE);
         config.setConfigProperty(GraknConfigKey.DATA_DIR, dataDir);
@@ -117,7 +119,9 @@ public class ConcurrentGraknServer extends ExternalResource {
 
     public EmbeddedGraknSession sessionWithNewKeyspace(){
         Keyspace randomKeyspace = Keyspace.of("a"+ UUID.randomUUID().toString().replaceAll("-", ""));
-        return EmbeddedGraknSession.createEngineSession(randomKeyspace, config);
+        EmbeddedGraknSession session = EmbeddedGraknSession.createEngineSession(randomKeyspace, config);
+        sessions.add(session);
+        return session;
     }
 
     private Server startGraknEngineServer() throws IOException {
@@ -152,4 +156,10 @@ public class ConcurrentGraknServer extends ExternalResource {
         return graknEngineServer;
     }
 
+    public void cleanup() throws Exception {
+        keyspaceStore.systemKeyspaceSession().tx.graph.close();
+        for (EmbeddedGraknSession session: sessions) {
+            session.tx.graph.close();
+        }
+    }
 }

@@ -63,6 +63,10 @@ public class KeyspaceStoreImpl implements KeyspaceStore {
         this.existingKeyspaces = ConcurrentHashMap.newKeySet();
     }
 
+    @Override
+    public EmbeddedGraknSession systemKeyspaceSession() {
+        return systemKeyspaceSession;
+    }
     /**
      * Logs a new {@link Keyspace} to the {@link KeyspaceStore}.
      *

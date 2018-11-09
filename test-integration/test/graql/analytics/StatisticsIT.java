@@ -37,6 +37,7 @@ import ai.grakn.graql.answer.Value;
 import ai.grakn.test.rule.ConcurrentGraknServer;
 import ai.grakn.util.Schema;
 import com.google.common.collect.Sets;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
@@ -86,6 +87,11 @@ public class StatisticsIT {
     @Before
     public void setUp() {
         session = server.sessionWithNewKeyspace();
+    }
+
+    @AfterClass
+    public static void classTearDown() throws Exception {
+        server.cleanup();
     }
 
     @Test

@@ -34,6 +34,7 @@ import ai.grakn.exception.InvalidKBException;
 import ai.grakn.graql.answer.ConceptSetMeasure;
 import ai.grakn.test.rule.ConcurrentGraknServer;
 import com.google.common.collect.Sets;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
@@ -65,6 +66,11 @@ public class DegreeIT {
     public void setUp() {
         session = server.sessionWithNewKeyspace();
         tx = session.transaction(GraknTxType.WRITE);
+    }
+
+    @AfterClass
+    public static void classTearDown() throws Exception {
+        server.cleanup();
     }
 
     @Test

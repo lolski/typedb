@@ -40,6 +40,7 @@ import ai.grakn.graql.internal.gremlin.fragment.OutSubFragment;
 import ai.grakn.kb.internal.EmbeddedGraknTx;
 import ai.grakn.test.rule.ConcurrentGraknServer;
 import com.google.common.collect.ImmutableList;
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.ClassRule;
@@ -89,6 +90,12 @@ public class IsaExplicitIT {
                 .assign(role2, entity2)
                 .assign(role3, entity3);
     }
+
+    @AfterClass
+    public static void classTearDown() throws Exception {
+        server.cleanup();
+    }
+
 
     @Test
     public void whenInsertIsaExplicit_InsertsADirectInstanceOfAType() {

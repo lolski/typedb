@@ -57,7 +57,7 @@ public class EmbeddedGraknSession implements GraknSession {
 
 
     //References so we don't have to open a tx just to check the count of the transactions
-    private EmbeddedGraknTx<?> tx = null;
+    public EmbeddedGraknTx<?> tx = null;
     private EmbeddedGraknTx<?> txBatch = null;
 
     //This map is needed to store in memory session - we need to cache them because in Tinker there i not concept of session o Tx

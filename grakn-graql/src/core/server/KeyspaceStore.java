@@ -20,6 +20,7 @@ package ai.grakn.core.server;
 
 import ai.grakn.Keyspace;
 import ai.grakn.concept.Label;
+import ai.grakn.factory.EmbeddedGraknSession;
 
 import java.util.Set;
 
@@ -86,4 +87,6 @@ public interface KeyspaceStore {
     void loadSystemSchema();
 
     void addKeyspace(Keyspace keyspace);
+
+    EmbeddedGraknSession systemKeyspaceSession();
 }

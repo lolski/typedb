@@ -28,6 +28,7 @@ import ai.grakn.test.rule.ConcurrentGraknServer;
 import ai.grakn.util.Schema;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
@@ -61,6 +62,11 @@ public class EdgeIT {
     public void tearDown(){
         tx.close();
         session.close();
+    }
+
+    @AfterClass
+    public static void classTearDown() throws Exception {
+        server.cleanup();
     }
 
     @Test

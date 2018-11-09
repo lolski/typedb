@@ -96,7 +96,7 @@ public abstract class EmbeddedGraknTx<G extends Graph> implements GraknAdmin {
 
     //----------------------------- Shared Variables
     private final EmbeddedGraknSession session;
-    private final G graph;
+    public final G graph;
     private final ElementFactory elementFactory;
     private final GlobalCache globalCache;
 

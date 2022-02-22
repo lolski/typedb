@@ -67,7 +67,7 @@ public abstract class OptionParser {
         public boolean parse(Set<Option> options) {
             if (matchingOptions(options).count() > 1) throw TypeDBException.of(DUPLICATE_CLI_OPTION, name());
             Optional<Option> option = matchingOptions(options).first();
-            if (option.isEmpty()) return false;
+            if (!option.isPresent()) return false;
             else if (option.get().hasValue()) throw TypeDBException.of(CLI_FLAG_OPTION_HAS_VALUE, option.get());
             else return true;
         }
@@ -84,7 +84,7 @@ public abstract class OptionParser {
         public Optional<java.lang.String> parse(Set<Option> options) {
             if (matchingOptions(options).count() > 1) throw TypeDBException.of(DUPLICATE_CLI_OPTION, name());
             Optional<Option> option = matchingOptions(options).first();
-            if (option.isEmpty()) return Optional.empty();
+            if (!option.isPresent()) return Optional.empty();
             else if (!option.get().hasValue()) {
                 throw TypeDBException.of(CLI_OPTION_REQUIRES_TYPED_VALUE, option.get(), valueDescription);
             } else {
@@ -104,7 +104,7 @@ public abstract class OptionParser {
         public Optional<java.nio.file.Path> parse(Set<Option> options) {
             if (matchingOptions(options).count() > 1) throw TypeDBException.of(DUPLICATE_CLI_OPTION, name());
             Optional<Option> option = matchingOptions(options).first();
-            if (option.isEmpty()) return Optional.empty();
+            if (!option.isPresent()) return Optional.empty();
             else if (!option.get().hasValue()) {
                 throw TypeDBException.of(CLI_OPTION_REQUIRES_TYPED_VALUE, option.get(), valueDescription);
             } else {
@@ -124,7 +124,7 @@ public abstract class OptionParser {
         public Optional<Integer> parse(Set<Option> options) {
             if (matchingOptions(options).count() > 1) throw TypeDBException.of(DUPLICATE_CLI_OPTION, name());
             Optional<Option> option = matchingOptions(options).first();
-            if (option.isEmpty()) return Optional.empty();
+            if (!option.isPresent()) return Optional.empty();
             else if (!option.get().hasValue())
                 throw TypeDBException.of(CLI_OPTION_REQUIRES_TYPED_VALUE, option.get());
             else {

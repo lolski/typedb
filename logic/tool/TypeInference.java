@@ -107,7 +107,7 @@ public class TypeInference {
             if (label.scope().isPresent()) {
                 String scope = label.scope().get();
                 Set<Label> labels = traversalEng.graph().schema().resolveRoleTypeLabels(label);
-                if (labels.isEmpty()) throw TypeDBException.of(ROLE_TYPE_NOT_FOUND, label.name(), scope);
+                if (labels.size() == 0) throw TypeDBException.of(ROLE_TYPE_NOT_FOUND, label.name(), scope);
                 typeVar.addInferredTypes(labels);
             } else {
                 TypeVertex type = traversalEng.graph().schema().getType(label);
@@ -140,7 +140,7 @@ public class TypeInference {
 
         TraversalBuilder builder = builder(conjunction, scopingConjunctions, graphMgr, insertable);
         Optional<Map<Identifier.Variable.Retrievable, Set<Label>>> resolvedLabels = executeTypeResolvers(builder);
-        if (resolvedLabels.isEmpty()) conjunction.setCoherent(false);
+        if (!resolvedLabels.isPresent()) conjunction.setCoherent(false);
         else {
             resolvedLabels.get().forEach((id, labels) -> builder.getOriginalVariable(id).ifPresent(variable -> {
                 assert variable.inferredTypes().isEmpty() || variable.inferredTypes().containsAll(labels);
